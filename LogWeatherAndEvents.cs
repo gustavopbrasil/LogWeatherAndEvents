@@ -5,8 +5,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using LogWeatherAndEvents.Services;
-using Newtonsoft.Json;
-using Microsoft.Identity.Client.Extensions.Msal;
 
 namespace WeatherMicroService;
 
@@ -14,6 +12,7 @@ public class LogWeatherAndEvents
 {
     private readonly ILogger<LogWeatherAndEvents> _logger;
     private readonly IWeatherService _weather;
+    private readonly IStorageService _storage;
     
     private readonly CloudTable _table;
     public LogWeatherAndEvents(ILogger<LogWeatherAndEvents> logger, IWeatherService weather)
@@ -48,16 +47,19 @@ public class LogWeatherAndEvents
             weatherResults.Add(result);
         }
 
-        var storage = new StorageService();
-        await storage.SaveWeatherAsync(weatherResults);
+        
+        await _storage.SaveWeatherAsync(weatherResults);
         
 
-// //IMPLEMENT EXCEPTION HANDLING
+        // //IMPLEMENT EXCEPTION HANDLING
         // TRY CATCH & RETRY FOR EXTERNAL API 
 
         return new OkObjectResult("Weather logged successfully.");
     }
 }
+
+
+   
 
 
    

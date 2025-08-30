@@ -19,7 +19,7 @@ public class WeatherService : IWeatherService
     {
         try
         {
-            // External API: map only what you need
+            // Weather API: map only what you need
             var url = $"{_options.BaseUrl}current.json?key={_options.ApiKey}&q={city}";
             var payload = await _http.GetFromJsonAsync<WeatherResponse>(url)
                           ?? throw new InvalidOperationException("Weather payload was null.");

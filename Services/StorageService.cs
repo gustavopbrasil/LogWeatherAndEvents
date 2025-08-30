@@ -1,10 +1,6 @@
 using Azure;
 using Azure.Data.Tables;
 
-public interface IStorageService
-{
-    Task SaveWeatherAsync(IEnumerable<WeatherEntity> items, string tableName = "Weather");
-}
 
 public class StorageService : IStorageService
 {

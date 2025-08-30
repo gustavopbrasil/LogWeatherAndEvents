@@ -39,15 +39,7 @@ var host = new HostBuilder()
 
         var storageConn =
             config["AzureWebJobsStorage"] ??
-            config["Values:AzureWebJobsStorage"]; // when running via local.settings.json
-
-        // services.AddSingleton(new BlobServiceClient(storageConn));
-        // services.AddSingleton(new TableServiceClient(storageConn)); // keep if you use Tables
-
-        // // 4) Your app services
-        // services.AddSingleton<IStorageService, StorageService>();
-        // If you also created a table service, register it too:
-        // services.AddSingleton<ITableStorageService, TableStorageService>();
+            config["Values:AzureWebJobsStorage"]; 
     })
     .Build();
 
