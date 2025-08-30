@@ -1,6 +1,6 @@
 # LogWeatherAndEvents
 
-Azure Functions (.NET 6) that fetch weather data and log it as events into Azure Table Storage.
+Azure Functions (.NET 9) that fetch weather data and log it as events into Azure Table Storage.
 
 ## ✨ What it does
 - Exposes an HTTP endpoint to retrieve current weather for a city/country.
@@ -30,3 +30,25 @@ LogWeatherAndEvents.cs <- HTTP function (entry point)
 Program.cs <- Host/DI configuration
 host.json
 local.settings.json <- (not committed) local config
+
+
+## 🔧 Requirements
+- .NET 9 SDK
+- Azure Functions Core Tools v4
+- Azurite (recommended for local Table/Blob/Queue)
+- An API key/URL for your weather provider
+
+## ⚙️ Configuration (`local.settings.json`)
+Create a `local.settings.json` (do **not** commit it):
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "Weather__BaseUrl": "https://api.weatherapi.com/v1",
+    "Weather__ApiKey": "<your_api_key>",
+  }
+}
+
