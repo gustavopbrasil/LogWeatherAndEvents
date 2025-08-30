@@ -14,7 +14,7 @@ public class StorageService : IStorageService
     }
 
     public async Task SaveWeatherAsync(IEnumerable<WeatherEntity> items, string tableName = "Weather")
-    {
+    { 
         var tableClient = _serviceClient.GetTableClient(tableName);
         await tableClient.CreateIfNotExistsAsync();
 

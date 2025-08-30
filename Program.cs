@@ -34,7 +34,7 @@ var host = new HostBuilder()
         {
             var o = sp.GetRequiredService<IOptions<WeatherOptions>>().Value;
             client.BaseAddress = new Uri(o.BaseUrl);
-            client.Timeout     = TimeSpan.FromSeconds(10);
+            client.Timeout     = TimeSpan.FromSeconds(10); 
         });
 
         var storageConn =

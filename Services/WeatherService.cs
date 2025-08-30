@@ -11,7 +11,7 @@ public class WeatherService : IWeatherService
 
     public WeatherService(HttpClient http, IOptions<WeatherOptions> options)
     {
-        _http = http;
+        _http = http; 
         _options = options.Value;
     }
 
