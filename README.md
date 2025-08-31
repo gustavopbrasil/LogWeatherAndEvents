@@ -18,14 +18,15 @@ Azure Functions (.NET 9) that fetch weather data and log it as events into Azure
 ## 📁 Project structure
 /Model
 WeatherEntity.cs
-API/WeatherResponse.cs (nullable props)
-WeatherResult.cs (DTO returned to clients)
+API/
+WeatherResponse.cs (nullable props)
 ...
 /Services
 IWeatherService.cs
 WeatherService.cs
 IStorageService.cs
 StorageService.cs
+...
 LogWeatherAndEvents.cs <- HTTP function (entry point)
 Program.cs <- Host/DI configuration
 host.json
