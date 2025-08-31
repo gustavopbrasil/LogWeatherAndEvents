@@ -5,6 +5,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using LogWeatherAndEvents.Services;
+using LogWeatherAndEvents.Model.API;
+
 
 namespace WeatherMicroService;
 
@@ -13,17 +15,14 @@ public class LogWeatherAndEvents
     private readonly ILogger<LogWeatherAndEvents> _logger;
     private readonly IWeatherService _weather;
     private readonly IStorageService _storage;
-    
-    private readonly CloudTable _table;
+    private readonly IEventPublisher _eventPublisher;
     public LogWeatherAndEvents(ILogger<LogWeatherAndEvents> logger, IWeatherService weather)
     {
         _logger = logger;
         _weather = weather;
 
-    }
-
+    } 
     
-
     [Function("LogWeatherAndEvents")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req, ILogger log)
     {
@@ -39,17 +38,18 @@ public class LogWeatherAndEvents
         };
         // MIGRATE THIS TO A DYNAMIC TABLE/INPUT 
 
-        List<WeatherEntity> weatherResults = new List<WeatherEntity>();
         foreach (var loc in locations)
         {
 
             var result = await _weather.GetCurrentAsync(loc.City);
-            weatherResults.Add(result);
-        }
+            await _storage.SaveWeatherAsync(result);
 
-        
-        await _storage.SaveWeatherAsync(weatherResults);
-        
+            if (result.IsRainyDay)
+            {
+                await _eventPublisher.PublishRainyDayAsync(result);
+            }           
+            
+        }  
 
         // //IMPLEMENT EXCEPTION HANDLING
         // TRY CATCH & RETRY FOR EXTERNAL API 

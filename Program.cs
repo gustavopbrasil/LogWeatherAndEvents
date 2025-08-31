@@ -21,25 +21,12 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        var config = context.Configuration;
+
+        services.AddHttpClient<IWeatherService, WeatherService>();
+        services.AddSingleton<IStorageService, StorageService>();
+        services.AddSingleton<IEventPublisher, EventGridPublisher>();
 
 
-        services.AddOptions<WeatherOptions>().Configure(opts =>
-        {
-            opts.ApiKey  = config["Weather:ApiKey"]        ?? config["Values:Weather__ApiKey"]  ?? "";
-            opts.BaseUrl = config["Weather:BaseUrl"]       ?? config["Values:Weather__BaseUrl"] ?? "https://api.weatherapi.com/v1/";
-        });
-
-        services.AddHttpClient<IWeatherService, WeatherService>((sp, client) =>
-        {
-            var o = sp.GetRequiredService<IOptions<WeatherOptions>>().Value;
-            client.BaseAddress = new Uri(o.BaseUrl);
-            client.Timeout     = TimeSpan.FromSeconds(10);
-        });
-
-        var storageConn =
-            config["AzureWebJobsStorage"] ??
-            config["Values:AzureWebJobsStorage"]; 
     })
     .Build();
 

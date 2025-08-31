@@ -20,12 +20,14 @@ public class WeatherService : IWeatherService
         try
         {
             // Weather API: map only what you need
-            var url = $"{_options.BaseUrl}current.json?key={_options.ApiKey}&q={city}";
+            var url = $"{Environment.GetEnvironmentVariable("Weather__BaseUrl")}current.json?key={Environment.GetEnvironmentVariable("Weather__ApiKey")}&q={city}";
             var payload = await _http.GetFromJsonAsync<WeatherResponse>(url)
                           ?? throw new InvalidOperationException("Weather payload was null.");
  
             return new WeatherEntity(city, payload.Location.Country)
             {
+                Country = payload.Location.Country ?? "",
+                City = payload.Location.Name ?? "",
                 Temperature = payload.Current.TempC ?? 0.0,
                 Condition = payload.Current.Condition.Text ?? "",
                 IsRainyDay = payload.Current.Condition.Text.ToLower().Contains("rain"),
