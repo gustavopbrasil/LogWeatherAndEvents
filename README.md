@@ -54,6 +54,8 @@ Create a `local.settings.json` (do **not** commit it):
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "Weather__BaseUrl": "https://api.weatherapi.com/v1",
     "Weather__ApiKey": "<your_api_key>",
+    "EventGrid:TopicEndpoint": "https://<your-topic-name>.<region>-1.eventgrid.azure.net/api/events",
+    "EventGrid:TopicKey": "<your-topic-key>"
   }
 }
 
