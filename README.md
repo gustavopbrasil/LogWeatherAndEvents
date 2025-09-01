@@ -1,27 +1,31 @@
 # LogWeatherAndEvents
 
-Azure Functions (.NET 9) that fetch weather data and log it as events into Azure Table Storage.
+Azure Functions (.NET 9) that fetch weather data and log it into Azure Storage.
 
-## ✨ What it does
-- Exposes an HTTP endpoint to retrieve current weather for a city/country.
-- Persists a normalized `WeatherEntity` into Azure Table Storage for auditing/analytics.
+##  What it does
+- Exposes an HTTP endpoint to retrieve current weather for a city.
+- Persists a normalized `WeatherEntity` into Azure Table Storage for.
+  *For "Rainy" weather publishes a Event into Azure Event Grid.
 
-## 🧱 Architecture (high level)
+## Architecture (high level)
 - **Function**: `LogWeatherAndEvents` (HTTP trigger, thin)
 - **Services**:
   - `IWeatherService` / `WeatherService`: calls external Weather API and returns a DTO.
   - `IStorageService` / `StorageService`: maps to `WeatherEntity` and writes to Table Storage.
+  - `IEventPublisher` /  `EventGridPublisher`: publishes "rainy" event into Azure Grid.
 - **Model**:
   - `WeatherEntity`: Azure Tables row, partitioned by country, row key: `"{city}_{Guid}"`.
   - Weather API DTOs (nullable-friendly).
 
-## 📁 Project structure
+## Project structure
 /Model
 WeatherEntity.cs
 API/
 WeatherResponse.cs (nullable props)
 ...
 /Services
+IEventPublisher.cs
+EventGridPublisher.cs
 IWeatherService.cs
 WeatherService.cs
 IStorageService.cs
@@ -33,13 +37,13 @@ host.json
 local.settings.json <- (not committed) local config
 
 
-## 🔧 Requirements
+## Requirements
 - .NET 9 SDK
 - Azure Functions Core Tools v4
 - Azurite (recommended for local Table/Blob/Queue)
 - An API key/URL for your weather provider
 
-## ⚙️ Configuration (`local.settings.json`)
+## Configuration (`local.settings.json`)
 Create a `local.settings.json` (do **not** commit it):
 
 ```json
