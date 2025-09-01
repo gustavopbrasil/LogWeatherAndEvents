@@ -7,23 +7,24 @@ namespace LogWeatherAndEvents.Services;
 public class WeatherService : IWeatherService
 {
     private readonly HttpClient _http;
-    private readonly WeatherOptions _options;
 
-    public WeatherService(HttpClient http, IOptions<WeatherOptions> options)
+    public WeatherService(HttpClient http)
     {
         _http = http;
-        _options = options.Value;
     }
+        
+    
 
     public async Task<WeatherEntity> GetCurrentAsync(string city)
     {
+        
         try
         {
             // Weather API: map only what you need
             var url = $"{Environment.GetEnvironmentVariable("Weather__BaseUrl")}current.json?key={Environment.GetEnvironmentVariable("Weather__ApiKey")}&q={city}";
             var payload = await _http.GetFromJsonAsync<WeatherResponse>(url)
                           ?? throw new InvalidOperationException("Weather payload was null.");
- 
+
             return new WeatherEntity(city, payload.Location.Country)
             {
                 Country = payload.Location.Country ?? "",
@@ -34,7 +35,7 @@ public class WeatherService : IWeatherService
                 LoggedAt = DateTime.UtcNow
             };
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.ToString);
             throw ex;

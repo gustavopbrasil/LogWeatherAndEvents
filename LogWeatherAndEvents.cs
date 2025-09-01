@@ -22,7 +22,7 @@ public class LogWeatherAndEvents
         _weather = weather;
 
     } 
-    
+
     [Function("LogWeatherAndEvents")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req, ILogger log)
     {
@@ -36,7 +36,7 @@ public class LogWeatherAndEvents
             new { City = "Lisbon", Country = "Portugal" },
             new { City = "Campinas", Country = "Brazil" }
         };
-        // MIGRATE THIS TO A DYNAMIC TABLE/INPUT 
+        // **********MIGRATE THIS TO A DYNAMIC TABLE/INPUT 
 
         foreach (var loc in locations)
         {
@@ -51,8 +51,7 @@ public class LogWeatherAndEvents
             
         }  
 
-        // //IMPLEMENT EXCEPTION HANDLING
-        // TRY CATCH & RETRY FOR EXTERNAL API 
+        // //**************IMPLEMENT EXCEPTION HANDLING, TRY CATCH & RETRY FOR EXTERNAL API 
 
         return new OkObjectResult("Weather logged successfully.");
     }
