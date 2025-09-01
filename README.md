@@ -18,6 +18,7 @@ Azure Functions (.NET 9) that fetch weather data and log it into Azure Storage.
   - Weather API DTOs (nullable-friendly).
 
 ## Project structure
+```
 /Model
 WeatherEntity.cs
 API/
@@ -35,7 +36,7 @@ LogWeatherAndEvents.cs <- HTTP function (entry point)
 Program.cs <- Host/DI configuration
 host.json
 local.settings.json <- (not committed) local config
-
+```
 
 ## Requirements
 - .NET 9 SDK
